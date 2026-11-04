@@ -239,7 +239,7 @@ export default function adminRoutes({ store, auth }) {
 
   router.get("/summary", async (req, res, next) => {
     try {
-      res.json(await store.getSummaryFromDb());
+      res.json(await store.getSummary());
     } catch (error) {
       next(error);
     }
@@ -251,7 +251,7 @@ export default function adminRoutes({ store, auth }) {
       if (status && !ORDER_STATUSES.includes(status)) {
         throw new ApiError(400, "Unknown order status.");
       }
-      res.json({ orders: await store.listOrdersFromDb(status || null) });
+      res.json({ orders: await store.listOrders(status || null) });
     } catch (error) {
       next(error);
     }
@@ -267,7 +267,7 @@ export default function adminRoutes({ store, auth }) {
       if (!ORDER_STATUSES.includes(status)) {
         throw new ApiError(400, "Unknown order status.");
       }
-      const order = await store.findOrderFromDb(req.params.id);
+      const order = await store.findOrder(req.params.id);
       if (!order) {
         throw new ApiError(404, "Order not found.");
       }
@@ -340,7 +340,7 @@ export default function adminRoutes({ store, auth }) {
 
   router.get("/customers", async (req, res, next) => {
     try {
-      res.json({ customers: await store.listCustomersFromDb() });
+      res.json({ customers: await store.listCustomers() });
     } catch (error) {
       next(error);
     }
@@ -361,7 +361,7 @@ export default function adminRoutes({ store, auth }) {
 
   router.get("/settings", async (req, res, next) => {
     try {
-      res.json({ settings: await store.getSettingsFromDb() });
+      res.json({ settings: await store.getSettings() });
     } catch (error) {
       next(error);
     }
@@ -382,7 +382,7 @@ export default function adminRoutes({ store, auth }) {
 
   router.get("/bills", async (req, res, next) => {
     try {
-      res.json({ bills: await store.listBillsFromDb() });
+      res.json({ bills: await store.listBills() });
     } catch (error) {
       next(error);
     }
@@ -427,7 +427,7 @@ export default function adminRoutes({ store, auth }) {
 
   router.get("/bills/:id", async (req, res, next) => {
     try {
-      const bill = await store.findBillFromDb(req.params.id);
+      const bill = await store.findBill(req.params.id);
       if (!bill) {
         throw new ApiError(404, "Bill not found.");
       }

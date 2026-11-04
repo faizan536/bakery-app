@@ -10,7 +10,7 @@ test("bakery app end-to-end", async (t) => {
   const dataDir = await fs.promises.mkdtemp(
     path.join(os.tmpdir(), "bakery-test-"),
   );
-  const { app, store } = await createApp({
+  const { app, close } = await createApp({
     dataDir,
     adminPassword: "secret-pass",
     sessionSecret: "test-session-secret",
@@ -21,6 +21,7 @@ test("bakery app end-to-end", async (t) => {
 
   t.after(async () => {
     await new Promise((resolve) => server.close(resolve));
+    await close();
     await fs.promises.rm(dataDir, { recursive: true, force: true });
   });
 
@@ -148,12 +149,11 @@ test("bakery app end-to-end", async (t) => {
     });
     assert.equal(cake.status, 201, cake.text);
     assert.equal(cake.json.order.total, 0);
-    assert.match(cake.json.order.cake.referenceImage, /^\/uploads\//);
-    const filename = path.basename(cake.json.order.cake.referenceImage);
-    assert.ok(
-      fs.existsSync(path.join(store.uploadDir, filename)),
-      "reference image should be saved to disk",
-    );
+    assert.match(cake.json.order.cake.referenceImage, /^\/api\/uploads\//);
+    const stored = await fetch(`${base}${cake.json.order.cake.referenceImage}`);
+    assert.equal(stored.status, 200);
+    assert.equal(stored.headers.get("content-type"), "image/png");
+    assert.equal(Buffer.from(await stored.arrayBuffer()).length, image.length);
 
     const tooSoon = await request("/api/orders", {
       method: "POST",
@@ -397,6 +397,21 @@ test("bakery app end-to-end", async (t) => {
       .replace(/&/g, "&amp;")
       .replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     assert.match(html, new RegExp(expectedName));
+    assert.match(html, /bill-print\.js/);
+    assert.doesNotMatch(html, /onclick=/);
+
+    const pdf = await fetch(`${base}/bill/${created.json.bill.id}.pdf`, {
+      headers: { cookie },
+    });
+    assert.equal(pdf.status, 200);
+    assert.equal(pdf.headers.get("content-type"), "application/pdf");
+    const pdfBytes = Buffer.from(await pdf.arrayBuffer());
+    assert.equal(pdfBytes.subarray(0, 5).toString(), "%PDF-");
+
+    const anonymous = await fetch(`${base}/bill/${created.json.bill.id}`, {
+      redirect: "manual",
+    });
+    assert.equal(anonymous.status, 302);
   });
 
   await t.test("settings validation and updates", async () => {

@@ -13,11 +13,12 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@vercel/blob": "^0.25.1",
-    "@vercel/postgres": "^0.8.0",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "pdfkit": "^0.20.2",
+    "pg": "^8.23.1"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.15",
     "playwright-core": "^1.64.1"
   }
 }

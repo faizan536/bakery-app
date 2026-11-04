@@ -1,6 +1,4 @@
-import crypto from "node:crypto";
 import express from "express";
-import { put } from "@vercel/blob";
 import {
   ApiError,
   addDaysStr,
@@ -63,7 +61,7 @@ export default function publicRoutes({ store }) {
   router.get("/bootstrap", async (req, res, next) => {
     try {
       const [settings, menu] = await Promise.all([
-        store.getSettingsFromDb(),
+        store.getSettings(),
         store.getMenu(true),
       ]);
       res.json({ settings, menu });
@@ -75,7 +73,7 @@ export default function publicRoutes({ store }) {
   router.get("/loyalty", async (req, res, next) => {
     try {
       const phone = normalizePhone(req.query.phone);
-      const loyalty = await store.getLoyaltyFromDb(phone);
+      const loyalty = await store.getLoyalty(phone);
       res.json({
         ...loyalty,
         name: loyalty.name ? maskName(loyalty.name) : "",
@@ -88,7 +86,7 @@ export default function publicRoutes({ store }) {
   router.post("/orders", orderLimiter, async (req, res, next) => {
     try {
       const body = req.body && typeof req.body === "object" ? req.body : {};
-      const settings = await store.getSettingsFromDb();
+      const settings = await store.getSettings();
 
       const customerName = str(body.name, {
         label: "Name",
@@ -201,9 +199,7 @@ export default function publicRoutes({ store }) {
         if (!extension) {
           throw new ApiError(400, "Please upload a valid JPG, PNG, or WebP image.");
         }
-        const filename = `${Date.now()}-${crypto.randomBytes(5).toString("hex")}.${extension}`;
-        const { url } = await put(filename, buffer, { access: "public" });
-        referenceImage = url;
+        referenceImage = await store.saveUpload(buffer, extension);
       }
 
       const cake = wantsCake
@@ -223,7 +219,7 @@ export default function publicRoutes({ store }) {
         notes,
         cake,
       });
-      const loyalty = await store.getLoyaltyFromDb(phone);
+      const loyalty = await store.getLoyalty(phone);
 
       res.status(201).json({
         order: publicOrder(order),
@@ -242,16 +238,26 @@ export default function publicRoutes({ store }) {
     try {
       const code = str(req.params.code, { label: "Order code", min: 1, max: 40 });
       const phone = normalizePhone(req.query.phone);
-      const orders = await store.listOrdersFromDb(null);
-      const order = orders.find(
-        (entry) =>
-          entry.code.toLowerCase() === code.toLowerCase() &&
-          entry.customer.phone === phone,
-      );
+      const order = await store.findOrderByCode(code, phone);
       if (!order) {
         throw new ApiError(404, "We couldn't find that order.");
       }
       res.json({ order: publicOrder(order) });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.get("/uploads/:id", async (req, res, next) => {
+    try {
+      if (!/^[\w.-]{1,80}$/.test(req.params.id)) {
+        throw new ApiError(404, "Not found.");
+      }
+      const upload = await store.getUpload(req.params.id);
+      if (!upload) throw new ApiError(404, "Not found.");
+      res.setHeader("Content-Type", upload.mime);
+      res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+      res.send(upload.bytes);
     } catch (error) {
       next(error);
     }

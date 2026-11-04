@@ -1,7 +1,15 @@
 {
-  "version": 2,
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/index.js" },
-    { "src": "/(.*)", "dest": "/public/$1" }
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "outputDirectory": "public",
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "node_modules/pdfkit/js/data/**"
+    }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/bill/(.*)", "destination": "/api" },
+    { "source": "/admin", "destination": "/admin.html" }
   ]
 }

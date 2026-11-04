@@ -2,9 +2,11 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import express from "express";
 import { createAuth } from "./lib/auth.js";
+import { openDatabase } from "./lib/db.js";
 import { Store } from "./lib/store.js";
 import { ApiError } from "./lib/util.js";
 import adminRoutes from "./routes/admin.js";
+import printRoutes from "./routes/print.js";
 import publicRoutes from "./routes/public.js";
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
@@ -56,10 +58,17 @@ export async function createApp(options = {}) {
     process.env.ADMIN_PASSWORD ||
     DEFAULT_ADMIN_PASSWORD;
 
-  const store = new Store();
+  const db = await openDatabase({
+    url: options.databaseUrl,
+    dataDir: options.dataDir || process.env.DATA_DIR || path.join(rootDir, "data"),
+  });
+  const store = new Store(db);
   await store.init();
 
-  const secret = options.sessionSecret || (await store.getSecret());
+  const secret =
+    options.sessionSecret ||
+    process.env.SESSION_SECRET ||
+    (await store.getSessionSecret());
   const auth = createAuth({ password: adminPassword, secret });
 
   const app = express();
@@ -73,9 +82,11 @@ export async function createApp(options = {}) {
     res.setHeader("Cache-Control", "no-store");
     res.sendFile(path.join(publicDir, "admin.html"));
   });
+  app.use(express.static(publicDir, { extensions: ["html"] }));
 
   app.use("/api", publicRoutes({ store }));
   app.use("/api/admin", adminRoutes({ store, auth }));
+  app.use("/bill", printRoutes({ store, auth }));
 
   app.use("/api", (req, res) => {
     res.status(404).json({ error: "Not found." });
@@ -86,7 +97,7 @@ export async function createApp(options = {}) {
       .status(404)
       .type("html")
       .send(
-        "<!doctype html><meta charset=\"utf-8\"><title>Not found</title><body style=\"font-family:system-ui;padding:3rem;background:#faf4e8;color:#2a1f18\"><h1>404</h1><p>That page doesn't exist. <a href=\"/\">Back to the bakery</a>.</p></body>",
+        "<!doctype html><meta charset=\"utf-8\"><title>Not found</title><body style=\"font-family:system-ui;padding:3rem\"><h1>404</h1><p>That page doesn't exist. <a href=\"/\">Back to the bakery</a>.</p></body>",
       );
   });
 
@@ -107,7 +118,7 @@ export async function createApp(options = {}) {
       .json({ error: "Something went wrong on our side. Please try again." });
   });
 
-  return { app, store };
+  return { app, store, close: () => db.close() };
 }
 
 const isMain =
