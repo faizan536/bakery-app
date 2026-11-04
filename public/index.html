@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Royal Bite — Cakes, toasts, khari &amp; cookies</title>
+    <meta
+      name="description"
+      content="Mawa cakes, toasts, flaky khari, cookies, and butter biscuits. Order ahead for pickup at Royal Bite."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#menu">Skip to menu</a>
+
+    <header class="site-header" id="siteHeader">
+      <div class="shell header-inner">
+        <a class="brand" href="/" aria-label="Royal Bite home">
+          <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+            <rect width="48" height="48" rx="14" fill="currentColor" />
+            <path
+              d="M14 30c0-6.6 4.5-11 10-11s10 4.4 10 11v3.5c0 1.9-1.6 3.5-3.5 3.5h-13c-1.9 0-3.5-1.6-3.5-3.5V30Z"
+              fill="none"
+              stroke="#fbf4e7"
+              stroke-width="1.6"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M14 30c2.3 1.4 6 2.2 10 2.2s7.7-.8 10-2.2M24 19v13"
+              fill="none"
+              stroke="#fbf4e7"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            />
+          </svg>
+          <span class="brand-text">
+            <span data-brand>Royal Bite</span>
+            <small>Bakery · Bandra West</small>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Primary">
+          <a href="#menu">Menu</a>
+          <a href="#story">Our story</a>
+          <a href="#visit">Visit</a>
+          <button class="nav-link" id="openLoyalty" type="button">Loyalty</button>
+        </nav>
+
+        <div class="header-actions">
+          <button class="bag-button" id="openCart" type="button" aria-label="Open your bag">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M6.5 8.5h11l1 11.5h-13l1-11.5Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M9 9V7a3 3 0 0 1 6 0v2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+              />
+            </svg>
+            <span class="bag-label">Bag</span>
+            <span class="bag-count" id="cartCount" hidden>0</span>
+          </button>
+          <button class="btn btn-primary btn-small" id="orderCta" type="button">
+            Order pickup
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="shell hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-dot"></span> Baked fresh daily · Mumbai</p>
+            <h1>Fresh bakes.<br /><em>Chai-time classics.</em></h1>
+            <p class="lede" data-tagline>
+              Cakes, toasts, khari, cookies, and butter biscuits, baked fresh in small batches.
+            </p>
+            <div class="hero-actions">
+              <button class="btn btn-primary" type="button" data-order-now>
+                Order for pickup
+              </button>
+              <a class="btn btn-ghost" href="#visit">Visit the bakery</a>
+            </div>
+            <ul class="hero-points">
+              <li>Baked fresh in small batches</li>
+              <li>Pick a slot, skip the queue</li>
+              <li>Ten stamps, one free bake</li>
+            </ul>
+          </div>
+
+          <div class="hero-art" aria-hidden="true">
+            <div class="hero-stage">
+              <div class="hero-card">
+                <span class="hero-card-label">Fresh from the oven</span>
+                <svg class="hero-loaf" viewBox="0 0 320 220" fill="none">
+                  <path
+                    d="M52 136c0-42 48-74 108-74s108 32 108 74v26c0 15-12 27-27 27H79c-15 0-27-12-27-27v-26Z"
+                    stroke="currentColor"
+                    stroke-width="2.4"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M52 136c23 15 61 24 108 24s85-9 108-24"
+                    stroke="currentColor"
+                    stroke-width="2.4"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M112 116c7-12 8-25 4-38M150 110c5-15 5-30 1-45M190 112c-4-13-4-27 0-41M225 121c-7-11-10-23-8-35"
+                    stroke="currentColor"
+                    stroke-width="2.4"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M84 164h152"
+                    stroke="currentColor"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                    opacity=".35"
+                  />
+                </svg>
+                <div class="hero-card-caption">
+                  <span>Morning bake</span>
+                  <span>4:00 am</span>
+                </div>
+                <span class="hero-card-grain"></span>
+              </div>
+
+              <div class="hero-badge">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 21V7M12 12c-3.5 0-6-2.2-6-5.5C9.5 6.5 12 8.7 12 12Zm0 0c3.5 0 6-2.2 6-5.5C14.5 6.5 12 8.7 12 12Zm0 5c-3.5 0-6-2.2-6-5.5 3.5 0 6 2.2 6 5.5Zm0 0c3.5 0 6-2.2 6-5.5-3.5 0-6 2.2-6 5.5Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.4"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <span>Small batch<br />Baked daily</span>
+              </div>
+
+              <div class="hero-mini hero-mini-left">
+                <span class="mini-eyebrow">Today's bake</span>
+                <strong>Still warm</strong>
+                <span>Pickups from 9am</span>
+              </div>
+
+              <div class="hero-mini hero-mini-right">
+                <span class="mini-number">32</span>
+                <span>bakes daily</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="marquee" aria-hidden="true">
+          <div class="marquee-track">
+            <span>Fresh bakes</span><span class="marquee-dot">·</span>
+            <span>Small batches</span><span class="marquee-dot">·</span>
+            <span>Mawa cakes</span><span class="marquee-dot">·</span>
+            <span>Flaky khari</span><span class="marquee-dot">·</span>
+            <span>Butter biscuits</span><span class="marquee-dot">·</span>
+            <span>Fresh bakes</span><span class="marquee-dot">·</span>
+            <span>Small batches</span><span class="marquee-dot">·</span>
+            <span>Mawa cakes</span><span class="marquee-dot">·</span>
+            <span>Flaky khari</span><span class="marquee-dot">·</span>
+            <span>Butter biscuits</span><span class="marquee-dot">·</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="menu-section" id="menu">
+        <div class="shell">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Today's counter</p>
+              <h2>Baked this morning</h2>
+            </div>
+            <p class="section-note">
+              Order ahead and collect in your slot. We bake in small batches, so
+              when it's gone, it's gone.
+            </p>
+          </div>
+
+          <div class="menu-toolbar">
+            <div class="tabs" id="categoryTabs" role="tablist" aria-label="Menu categories"></div>
+            <label class="menu-search">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.7" />
+                <path d="m16 16 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+              </svg>
+              <span class="sr-only">Search the menu</span>
+              <input id="menuSearch" type="search" placeholder="Search bakes" autocomplete="off" />
+            </label>
+          </div>
+
+          <div class="menu-grid" id="menuGrid" aria-live="polite">
+            <div class="dish skeleton"></div>
+            <div class="dish skeleton"></div>
+            <div class="dish skeleton"></div>
+            <div class="dish skeleton"></div>
+            <div class="dish skeleton"></div>
+            <div class="dish skeleton"></div>
+          </div>
+
+          <div class="menu-empty" id="menuEmpty" hidden>
+            <h3>Nothing matches that search.</h3>
+            <p>Try “mawa”, “khari”, or browse every category.</p>
+            <button class="btn btn-ghost" type="button" data-reset-filters>Show everything</button>
+          </div>
+
+          <p class="menu-error" id="menuError" hidden>
+            The menu didn't load. Check your connection and
+            <button type="button" class="text-button" data-retry>try again</button>.
+          </p>
+        </div>
+      </section>
+
+      <section class="story" id="story">
+        <div class="shell story-grid">
+          <div class="story-art" aria-hidden="true">
+            <div class="story-arch">
+              <svg viewBox="0 0 280 340" fill="none">
+                <path
+                  d="M140 58c-44 0-80 34-80 76 0 34 23 47 23 82 0 29-16 53-16 84h146c0-31-16-55-16-84 0-35 23-48 23-82 0-42-36-76-80-76Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M110 190c0-20 13-34 30-34s30 14 30 34v12h-60v-12Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M110 190c8 5 18 8 30 8s22-3 30-8M140 156v34"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M122 236c0 8 8 14 18 14s18-6 18-14"
+                  stroke="currentColor"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                  opacity=".5"
+                />
+              </svg>
+              <p class="story-arch-caption">Good bakes take their time.</p>
+            </div>
+            <div class="story-chip">Fresh daily<br /><span>small batches</span></div>
+          </div>
+
+          <div class="story-copy">
+            <p class="eyebrow">Our story</p>
+            <h2>Small batches.<br /><em>Honest ingredients.</em></h2>
+            <p data-story>
+              Royal Bite is a neighbourhood bakery baking cakes, toasts, khari,
+              cookies, and butter biscuits fresh every day.
+            </p>
+            <div class="story-stats">
+              <div><strong>32</strong><span>bakes on the list</span></div>
+              <div><strong>4am</strong><span>ovens on, daily</span></div>
+              <div><strong>10</strong><span>stamps, one free bake</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="visit" id="visit">
+        <div class="shell">
+          <div class="visit-card">
+            <div class="visit-copy">
+              <p class="eyebrow eyebrow-light">Visit</p>
+              <h2>Come by while<br />it's warm.</h2>
+              <p class="visit-address" data-address>Mumbai, Maharashtra</p>
+              <div class="visit-actions">
+                <a class="btn btn-cream" data-whatsapp target="_blank" rel="noopener">
+                  Chat on WhatsApp
+                </a>
+                <a class="btn btn-outline-light" data-instagram target="_blank" rel="noopener">
+                  Instagram
+                </a>
+              </div>
+            </div>
+            <div class="visit-hours">
+              <h3>Bakery hours</h3>
+              <dl data-hours></dl>
+              <p class="notice" data-notice></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-grid">
+        <div class="footer-brand-block">
+          <a class="brand brand-light" href="/">
+            <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+              <rect width="48" height="48" rx="14" fill="#c26a3c" />
+              <path
+                d="M14 30c0-6.6 4.5-11 10-11s10 4.4 10 11v3.5c0 1.9-1.6 3.5-3.5 3.5h-13c-1.9 0-3.5-1.6-3.5-3.5V30Z"
+                fill="none"
+                stroke="#fbf4e7"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M14 30c2.3 1.4 6 2.2 10 2.2s7.7-.8 10-2.2M24 19v13"
+                fill="none"
+                stroke="#fbf4e7"
+                stroke-width="1.6"
+                stroke-linecap="round"
+              />
+            </svg>
+            <span class="brand-text">
+              <span data-brand>Royal Bite</span>
+              <small>Bakery · Bandra West</small>
+            </span>
+          </a>
+          <p>Mawa cakes, toasts, khari, cookies, and butter biscuits. Baked fresh every morning.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#menu">Menu</a>
+          <a href="#story">Our story</a>
+          <a href="#visit">Visit</a>
+          <button type="button" data-open-loyalty>Loyalty card</button>
+          <a href="/admin">Staff sign in</a>
+        </div>
+        <div class="footer-meta">
+          <p class="copyright">
+            © <span id="year"></span> <span data-brand>Royal Bite</span>
+          </p>
+          <p class="footer-small">Made for early mornings.</p>
+        </div>
+      </div>
+    </footer>
+
+    <div class="overlay" id="drawerOverlay" hidden></div>
+
+    <aside
+      class="drawer"
+      id="drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="drawerTitle"
+      aria-hidden="true"
+    >
+      <div class="drawer-head">
+        <div>
+          <p class="eyebrow">Pickup order</p>
+          <h2 id="drawerTitle">Your bag</h2>
+        </div>
+        <button class="icon-button" id="closeDrawer" type="button" aria-label="Close bag">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="drawer-body">
+        <div id="cartView">
+          <div class="cart-items" id="cartItems"></div>
+
+          <div class="cake-block">
+            <label class="switch-row">
+              <input type="checkbox" id="cakeToggle" />
+              <span class="switch-box" aria-hidden="true"></span>
+              <span class="switch-text">
+                <strong>Add a custom cake request</strong>
+                <small>We'll confirm the design and price on WhatsApp.</small>
+              </span>
+            </label>
+
+            <div class="cake-fields" id="cakeFields" hidden>
+              <label class="field">
+                <span>Tell us about the cake</span>
+                <textarea
+                  id="cakeDescription"
+                  rows="3"
+                  maxlength="600"
+                  placeholder="Occasion, size, flavours, colours, anything we should know…"
+                ></textarea>
+              </label>
+              <label class="field file-field">
+                <span>Reference photo (optional)</span>
+                <input id="cakePhoto" type="file" accept="image/jpeg,image/png,image/webp" />
+                <small id="photoName">JPG, PNG, or WebP. We'll shrink it for you.</small>
+              </label>
+              <div class="photo-preview" id="photoPreviewWrap" hidden>
+                <img id="photoPreview" alt="Your cake reference" />
+                <button class="text-button" type="button" id="removePhoto">Remove photo</button>
+              </div>
+            </div>
+          </div>
+
+          <form id="checkoutForm" novalidate hidden>
+            <div class="form-grid">
+              <label class="field">
+                <span>Name</span>
+                <input id="customerName" name="name" autocomplete="name" maxlength="80" placeholder="Your name" />
+              </label>
+              <label class="field">
+                <span>Phone (WhatsApp)</span>
+                <input
+                  id="customerPhone"
+                  name="phone"
+                  autocomplete="tel"
+                  inputmode="tel"
+                  maxlength="24"
+                  placeholder="+91 98765 43210"
+                />
+              </label>
+              <label class="field">
+                <span>Pickup date</span>
+                <select id="pickupDate"></select>
+              </label>
+              <label class="field">
+                <span>Pickup slot</span>
+                <select id="pickupSlot"></select>
+              </label>
+            </div>
+            <label class="field">
+              <span>Notes for the kitchen (optional)</span>
+              <textarea
+                id="orderNotes"
+                rows="2"
+                maxlength="400"
+                placeholder="Allergies, slicing, a note on the box…"
+              ></textarea>
+            </label>
+
+            <div class="checkout-summary">
+              <div class="summary-row">
+                <span>Subtotal</span>
+                <strong id="cartSubtotal">₹0</strong>
+              </div>
+              <p class="hint" id="paymentHint">Pay at pickup. No online payment needed.</p>
+            </div>
+
+            <p class="form-error" id="formError" role="alert" hidden></p>
+
+            <button class="btn btn-primary btn-block" id="placeOrder" type="submit">
+              Place pickup order
+            </button>
+            <p class="fine-print">
+              You'll get an order code, and we'll open WhatsApp so you can send it
+              straight to the bakery.
+            </p>
+          </form>
+        </div>
+
+        <div id="confirmationView" hidden>
+          <div class="confirmation">
+            <div class="success-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <p class="eyebrow">Order received</p>
+            <h2 id="confirmationTitle">See you at pickup.</h2>
+            <p class="order-code" id="confirmationCode">GC-1001</p>
+            <p class="confirmation-lede" id="confirmationLede"></p>
+
+            <div class="confirmation-card" id="confirmationSummary"></div>
+
+            <div class="stamp-preview" id="confirmationLoyalty"></div>
+
+            <a class="btn btn-primary btn-block" id="sendWhatsApp" target="_blank" rel="noopener">
+              Send order on WhatsApp
+            </a>
+            <button class="btn btn-ghost btn-block" type="button" id="orderAgain">
+              Start another order
+            </button>
+            <p class="fine-print">
+              Your order is saved. Sending it on WhatsApp just speeds up
+              confirmation from the bakery.
+            </p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="modal" id="loyaltyModal" role="dialog" aria-modal="true" aria-labelledby="loyaltyTitle" hidden>
+      <div class="modal-card">
+        <button class="icon-button modal-close" id="closeLoyalty" type="button" aria-label="Close loyalty card">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+          </svg>
+        </button>
+        <p class="eyebrow">Loyalty card</p>
+        <h2 id="loyaltyTitle">Ten stamps.<br /><em>One free bake.</em></h2>
+        <p class="modal-lede" data-loyalty-blurb></p>
+        <form id="loyaltyForm" class="loyalty-form" novalidate>
+          <label class="field">
+            <span>Your phone number</span>
+            <input id="loyaltyPhone" inputmode="tel" maxlength="24" placeholder="+91 98765 43210" />
+          </label>
+          <button class="btn btn-primary" type="submit">Check my stamps</button>
+        </form>
+        <div class="loyalty-result" id="loyaltyResult" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

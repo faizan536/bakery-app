@@ -1,0 +1,23 @@
+{
+  "name": "bakery-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Storefront, pickup orders, loyalty, and counter billing for a neighborhood bakery",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@vercel/blob": "^0.25.1",
+    "@vercel/postgres": "^0.8.0",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.64.1"
+  }
+}

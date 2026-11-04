@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Back office — Royal Bite</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/admin.css" />
+  </head>
+  <body>
+    <div class="login-screen" id="loginScreen">
+      <div class="login-shell">
+        <div class="login-aside">
+          <a class="brand brand-light" href="/">
+            <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+              <rect width="48" height="48" rx="14" fill="#f6e7d3" />
+              <path
+                d="M14 30c0-6.6 4.5-11 10-11s10 4.4 10 11v3.5c0 1.9-1.6 3.5-3.5 3.5h-13c-1.9 0-3.5-1.6-3.5-3.5V30Z"
+                fill="none"
+                stroke="#2b211a"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M14 30c2.3 1.4 6 2.2 10 2.2s7.7-.8 10-2.2M24 19v13"
+                fill="none"
+                stroke="#2b211a"
+                stroke-width="1.6"
+                stroke-linecap="round"
+              />
+            </svg>
+            <span class="brand-text">
+              <span data-brand>Royal Bite</span>
+              <small>Back office</small>
+            </span>
+          </a>
+          <div class="login-copy">
+            <p class="eyebrow eyebrow-light">Staff only</p>
+            <h1>Good morning.<br /><em>Let's bake.</em></h1>
+            <p>
+              Today's pickup orders, the menu, loyalty cards, and the details
+              that keep the shop running — all in one place.
+            </p>
+          </div>
+          <p class="login-quote">
+            “The ovens are on. Here's what's coming out today.”
+          </p>
+        </div>
+
+        <div class="login-panel">
+          <div class="login-panel-head">
+            <p class="eyebrow">Welcome back</p>
+            <h2>Sign in</h2>
+            <p>Use the bakery admin password to continue.</p>
+          </div>
+          <form id="loginForm" novalidate>
+            <label class="field">
+              <span>Password</span>
+              <input
+                id="loginPassword"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Enter your password"
+                required
+              />
+            </label>
+            <p class="form-error" id="loginError" role="alert" hidden></p>
+            <button class="btn btn-primary btn-block" id="loginButton" type="submit">
+              Sign in
+            </button>
+          </form>
+          <a class="back-link" href="/">← Back to the bakery</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-app" id="adminApp" hidden>
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="View the bakery site">
+          <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+            <rect width="48" height="48" rx="14" fill="currentColor" />
+            <path
+              d="M14 30c0-6.6 4.5-11 10-11s10 4.4 10 11v3.5c0 1.9-1.6 3.5-3.5 3.5h-13c-1.9 0-3.5-1.6-3.5-3.5V30Z"
+              fill="none"
+              stroke="#fbf4e7"
+              stroke-width="1.6"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M14 30c2.3 1.4 6 2.2 10 2.2s7.7-.8 10-2.2M24 19v13"
+              fill="none"
+              stroke="#fbf4e7"
+              stroke-width="1.6"
+              stroke-linecap="round"
+            />
+          </svg>
+          <span class="brand-text">
+            <span data-brand>Royal Bite</span>
+            <small>Back office</small>
+          </span>
+        </a>
+
+        <nav class="side-nav" aria-label="Dashboard sections">
+          <button class="side-link active" type="button" data-view="orders">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6.5 8.5h11l1 11.5h-13l1-11.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+              <path d="M9 9V7a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+            <span>Orders</span>
+            <span class="side-badge" id="newOrderBadge" hidden>0</span>
+          </button>
+          <button class="side-link" type="button" data-view="menu">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+            </svg>
+            <span>Menu</span>
+          </button>
+          <button class="side-link" type="button" data-view="customers">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="9" r="3.4" fill="none" stroke="currentColor" stroke-width="1.6" />
+              <path d="M5.5 19c.8-3.4 3.4-5.3 6.5-5.3s5.7 1.9 6.5 5.3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+            <span>Customers</span>
+          </button>
+          <button class="side-link" type="button" data-view="settings">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.6" />
+              <path d="M12 4v2M12 18v2M4 12h2M18 12h2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M17.7 6.3l-1.4 1.4M7.7 16.3l-1.4 1.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+            <span>Settings</span>
+          </button>
+          <button class="side-link" type="button" data-view="billing">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="2" y="7" width="20" height="14" rx="1.5" ry="1.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+              <path d="M2 13h20M8 9l4 4M12 9l4 4M16 9l4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>Billing</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-foot">
+          <a href="/" target="_blank" rel="noopener">View storefront ↗</a>
+          <button type="button" id="logoutButton">Sign out</button>
+        </div>
+      </aside>
+
+      <div class="admin-main">
+        <header class="topbar">
+          <div>
+            <p class="today" id="todayLabel"></p>
+            <h1 id="viewTitle">Orders</h1>
+          </div>
+          <div class="topbar-actions">
+            <span class="live-pill"><span></span> Auto-refresh</span>
+            <button class="btn btn-ghost btn-small" type="button" id="refreshButton">
+              Refresh
+            </button>
+          </div>
+        </header>
+
+        <main class="admin-content">
+          <section class="view" id="view-orders">
+            <div class="stats-grid" id="statsGrid"></div>
+
+            <div class="panel">
+              <div class="panel-head orders-head">
+                <div class="filter-tabs" id="orderFilters" role="tablist" aria-label="Filter orders">
+                  <button class="filter-tab active" type="button" data-filter="all">
+                    All <span id="countAll">0</span>
+                  </button>
+                  <button class="filter-tab" type="button" data-filter="new">
+                    New <span id="countNew">0</span>
+                  </button>
+                  <button class="filter-tab" type="button" data-filter="ready">
+                    Ready <span id="countReady">0</span>
+                  </button>
+                  <button class="filter-tab" type="button" data-filter="completed">
+                    Picked up <span id="countCompleted">0</span>
+                  </button>
+                  <button class="filter-tab" type="button" data-filter="cancelled">
+                    Cancelled <span id="countCancelled">0</span>
+                  </button>
+                </div>
+                <span class="panel-note" id="ordersNote">Loading orders…</span>
+              </div>
+              <div class="orders-list" id="ordersList"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-menu" hidden>
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Menu</h2>
+                  <p class="panel-sub">
+                    Changes go live on the storefront immediately. Items marked
+                    unavailable show as sold out.
+                  </p>
+                </div>
+                <button class="btn btn-primary btn-small" type="button" id="addItemToggle">
+                  + Add item
+                </button>
+              </div>
+
+              <form class="add-item-form" id="addItemForm" hidden>
+                <div class="form-grid form-grid-4">
+                  <label class="field">
+                    <span>Name</span>
+                    <input id="newItemName" maxlength="80" placeholder="Brown butter cookie" required />
+                  </label>
+                  <label class="field">
+                    <span>Category</span>
+                    <input id="newItemCategory" maxlength="40" list="categoryOptions" placeholder="Cookies" required />
+                    <datalist id="categoryOptions"></datalist>
+                  </label>
+                  <label class="field">
+                    <span>Price</span>
+                    <input id="newItemPrice" type="number" min="0" max="500000" step="1" placeholder="260" required />
+                  </label>
+                  <label class="field">
+                    <span>Tag (optional)</span>
+                    <input id="newItemTag" maxlength="24" placeholder="New" />
+                  </label>
+                </div>
+                <label class="field">
+                  <span>Description</span>
+                  <textarea id="newItemDescription" rows="2" maxlength="300" placeholder="What's in it, and why it's good."></textarea>
+                </label>
+                <div class="form-actions">
+                  <button class="btn btn-ghost btn-small" type="button" id="cancelAddItem">
+                    Cancel
+                  </button>
+                  <button class="btn btn-primary btn-small" type="submit">
+                    Add to menu
+                  </button>
+                </div>
+              </form>
+
+              <div class="menu-admin-list" id="menuAdminList"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-customers" hidden>
+            <div class="panel">
+              <div class="panel-head">
+                <div>
+                  <h2>Customers</h2>
+                  <p class="panel-sub">
+                    Built from pickup orders. A loyalty stamp is added when an
+                    order is marked picked up.
+                  </p>
+                </div>
+                <span class="panel-note" id="customersNote"></span>
+              </div>
+              <div class="customer-table-wrap" id="customersList"></div>
+            </div>
+          </section>
+
+          <section class="view" id="view-settings" hidden>
+            <form class="panel settings-form" id="settingsForm" novalidate>
+              <div class="panel-head">
+                <div>
+                  <h2>Settings</h2>
+                  <p class="panel-sub">
+                    These details power the storefront, pickup confirmation, and
+                    WhatsApp links.
+                  </p>
+                </div>
+                <button class="btn btn-primary btn-small" type="submit">
+                  Save changes
+                </button>
+              </div>
+
+              <div class="settings-grid">
+                <label class="field">
+                  <span>Bakery name</span>
+                  <input id="setBakeryName" maxlength="60" required />
+                </label>
+                <label class="field">
+                  <span>Order prefix</span>
+                  <input id="setOrderPrefix" maxlength="4" placeholder="GC" />
+                </label>
+                <label class="field span-2">
+                  <span>Tagline</span>
+                  <input id="setTagline" maxlength="160" />
+                </label>
+                <label class="field span-2">
+                  <span>Story</span>
+                  <textarea id="setStory" rows="3" maxlength="600"></textarea>
+                </label>
+                <label class="field span-2">
+                  <span>Address</span>
+                  <input id="setAddress" maxlength="200" />
+                </label>
+                <label class="field">
+                  <span>Phone shown on site</span>
+                  <input id="setPhoneDisplay" maxlength="40" />
+                </label>
+                <label class="field">
+                  <span>WhatsApp number (digits only)</span>
+                  <input id="setWhatsapp" maxlength="20" inputmode="numeric" />
+                </label>
+                <label class="field">
+                  <span>Instagram handle</span>
+                  <input id="setInstagram" maxlength="40" />
+                </label>
+                <label class="field">
+                  <span>Currency symbol</span>
+                  <input id="setCurrency" maxlength="4" />
+                </label>
+                <label class="field">
+                  <span>Country code for customer WhatsApp</span>
+                  <input id="setCountryCode" maxlength="4" inputmode="numeric" placeholder="91" />
+                </label>
+                <label class="field">
+                  <span>Loyalty target (stamps)</span>
+                  <input id="setLoyaltyTarget" type="number" min="2" max="50" />
+                </label>
+                <label class="field span-2">
+                  <span>Loyalty blurb</span>
+                  <input id="setLoyaltyBlurb" maxlength="240" />
+                </label>
+                <label class="field span-2">
+                  <span>Pickup slots (one per line)</span>
+                  <textarea id="setSlots" rows="4" placeholder="9:00 – 11:00 am"></textarea>
+                </label>
+                <label class="field">
+                  <span>Closed weekdays</span>
+                  <input id="setClosedWeekdays" placeholder="1 (0 = Sunday)" />
+                  <small>Comma-separated: 0 = Sunday, 1 = Monday, …</small>
+                </label>
+                <label class="field">
+                  <span>Notice at checkout</span>
+                  <input id="setNotice" maxlength="300" />
+                </label>
+                <div class="field span-2">
+                  <span>Opening hours</span>
+                  <div class="hours-rows" id="hoursRows"></div>
+                  <button class="text-button align-left" type="button" id="addHoursRow">
+                    + Add hours row
+                  </button>
+                </div>
+              </div>
+
+              <p class="form-error" id="settingsError" role="alert" hidden></p>
+              <p class="settings-saved" id="settingsSaved" hidden>
+                Saved. The storefront is updated.
+              </p>
+              <div class="form-actions">
+                <button class="btn btn-primary" type="submit">Save settings</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="view" id="view-billing" hidden>
+            <div class="billing-wrap">
+              <div class="panel billing-new">
+                <div class="panel-head">
+                  <h2>New bill</h2>
+                  <p class="panel-sub">Pick items, set quantities, then save and print.</p>
+                </div>
+                <div class="form-grid form-grid-2">
+                  <label class="field span-2">
+                    <span>Customer name (optional)</span>
+                    <input id="billCustomerName" maxlength="100" placeholder="Walk-in customer" />
+                  </label>
+                  <label class="field">
+                    <span>Phone</span>
+                    <input id="billCustomerPhone" maxlength="20" inputmode="numeric" placeholder="9876543210" />
+                  </label>
+                </div>
+                <div class="billing-toolbar">
+                  <input id="billSearch" placeholder="Search items…" />
+                  <button class="btn btn-ghost btn-small" type="button" id="clearBill">Clear bill</button>
+                </div>
+                <div class="product-grid" id="billProducts"></div>
+                <div class="bill-cart">
+                  <div class="bill-cart-head">
+                    <h2 style="margin:0 0 2mm 0;">Items on bill <span id="billItemCount">0</span></h2>
+                    <div class="bill-total">Total: <span id="billTotal">₹0</span></div>
+                  </div>
+                  <table class="bill-table" id="billTable">
+                    <thead>
+                      <tr>
+                        <th class="item-name">Item</th>
+                        <th class="num">Price</th>
+                        <th class="num">Qty</th>
+                        <th class="num">Total</th>
+                        <th style="width:34px;"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="billRows"></tbody>
+                  </table>
+                  <p id="billEmpty" hidden style="color:#9a7e66;font-size:12px;text-align:center;padding:8mm 0;">No items yet</p>
+                  <div class="form-actions" id="billActions" hidden>
+                    <button class="btn btn-primary" type="button" id="saveBill">Save &amp; print bill</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel billing-history">
+                <div class="panel-head"><h2>Recent bills</h2></div>
+                <div id="billList">Loading…</div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div class="admin-modal" id="editItemModal" hidden>
+      <div class="admin-modal-card" role="dialog" aria-modal="true" aria-labelledby="editItemTitle">
+        <div class="admin-modal-head">
+          <div>
+            <p class="eyebrow">Menu</p>
+            <h2 id="editItemTitle">Edit item</h2>
+          </div>
+          <button class="icon-button" type="button" id="closeEditItem" aria-label="Close">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+        <form id="editItemForm">
+          <div class="form-grid">
+            <label class="field">
+              <span>Name</span>
+              <input id="editItemName" maxlength="80" required />
+            </label>
+            <label class="field">
+              <span>Category</span>
+              <input id="editItemCategory" maxlength="40" list="categoryOptions" required />
+            </label>
+            <label class="field">
+              <span>Price</span>
+              <input id="editItemPrice" type="number" min="0" max="500000" step="1" required />
+            </label>
+            <label class="field">
+              <span>Tag</span>
+              <input id="editItemTag" maxlength="24" />
+            </label>
+          </div>
+          <label class="field">
+            <span>Description</span>
+            <textarea id="editItemDescription" rows="3" maxlength="300"></textarea>
+          </label>
+          <label class="check-row">
+            <input id="editItemAvailable" type="checkbox" />
+            <span>Available to order</span>
+          </label>
+          <p class="form-error" id="editItemError" role="alert" hidden></p>
+          <div class="form-actions">
+            <button class="btn btn-ghost btn-small" type="button" id="cancelEditItem">
+              Cancel
+            </button>
+            <button class="btn btn-primary btn-small" type="submit">
+              Save item
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="toast" id="adminToast" role="status" aria-live="polite" hidden></div>
+
+    <script src="/admin.js" type="module"></script>
+  </body>
+</html>
