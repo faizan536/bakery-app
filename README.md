@@ -1,20 +1,18 @@
 # Royal Bite
 
-A small bakery storefront and back office: menu, pickup orders, loyalty stamps, counter billing, and a WhatsApp-first workflow. Node + Express with Vercel Postgres and Vercel Blob for storage.
+A small bakery storefront and back office: menu, pickup orders, loyalty stamps, counter billing, and a WhatsApp-first workflow. Node + Express on Vercel, with all data (including cake photos) in one Postgres database (Neon).
 
 ## Run locally
 
-You need a Postgres database (local or hosted) and a `.env` file:
+No database setup is needed locally: without `DATABASE_URL`, the app uses an embedded Postgres (PGlite) stored in `data/pglite`.
 
 ```bash
-cp .env.example .env
-# edit .env with your DATABASE_URL, ADMIN_PASSWORD, SESSION_SECRET
 npm install
-npm start
+ADMIN_PASSWORD=choose-something npm start
 ```
 
 - Storefront: http://localhost:4173
-- Back office: http://localhost:4173/admin.html
+- Back office: http://localhost:4173/admin
 - Default admin password is `bakery123` if `ADMIN_PASSWORD` is not set.
 
 For development with auto-restart:
@@ -33,10 +31,10 @@ npm test
 
 | Variable           | Required | Purpose                                        |
 | ------------------ | -------- | ---------------------------------------------- |
-| `DATABASE_URL`     | yes      | Vercel Postgres connection string              |
-| `BLOB_READ_WRITE_TOKEN` | yes   | Vercel Blob read/write token (for cake images) |
-| `ADMIN_PASSWORD`   | no       | Back-office password (default `bakery123`)     |
-| `SESSION_SECRET`   | no       | Cookie signing secret                          |
+| `DATABASE_URL`     | on Vercel | Postgres connection string (added by the Neon integration) |
+| `ADMIN_PASSWORD`   | yes online | Back-office password (default `bakery123`)    |
+| `SESSION_SECRET`   | no       | Cookie signing secret (generated and stored in the database if unset) |
+| `APP_TIMEZONE`     | no       | Timezone for bill dates and daily totals (default `Asia/Kolkata`) |
 | `PORT`             | no       | Local dev port (default `4173`)                |
 
 ## How it works
@@ -45,23 +43,22 @@ npm test
 - **Back office** (`public/admin.html`): order board with filters and status buttons (`new` → `ready` → `completed`), menu management (add/edit/delete, sold-out toggle, photo upload), customer list with spend and stamps, and settings (bakery details, WhatsApp number, currency, loyalty target, pickup slots, closed weekdays, opening hours, checkout notice).
 - **Counter billing**: sign in at `/admin`, tap **Billing**, tap items to set quantities, add a customer name/phone if needed, then **Save & print bill**. The bill shows the bakery name, tagline, address and phone, an itemised table with quantities and line totals, item count, and grand total. The **View · Print** link opens a print-ready page; **Download PDF** saves a black-and-white receipt PDF. Bills are stored in the database and listed under Recent bills for reprinting.
 - **Loyalty**: marking an order picked up adds one stamp. Ten stamps (configurable) earns a free bake. Redeeming resets the stamp counter.
-- **Data**: orders, bills, customers, menu, settings, and loyalty live in Vercel Postgres. Cake reference images are stored in Vercel Blob.
+- **Data**: orders, bills, customers, menu, settings, loyalty, and cake reference photos live in Postgres (`rb_*` tables, created automatically on first start).
 
 ## Deploy on Vercel
 
-1. Push this repo to GitHub.
-2. In Vercel, add a **Postgres** database to your project.
-3. Add a **Blob** store to your project.
-4. Import the GitHub repo as a new Vercel project.
-5. Add environment variables in Vercel project settings:
-   - `DATABASE_URL` (from Postgres integration)
-   - `BLOB_READ_WRITE_TOKEN` (from Blob integration)
-   - `ADMIN_PASSWORD` (strong password)
-   - `SESSION_SECRET` (random string)
-6. Deploy. On first deploy, the schema and seed data are created automatically.
-7. Open your Vercel URL → `/admin.html` → sign in with `ADMIN_PASSWORD`.
+This project is live at https://bakery-app-sooty.vercel.app (Vercel project `bakery-app`, Neon database `royal-bite-db`, both in Singapore `sin1`). Every push to `main` on GitHub deploys automatically.
 
-Vercel routes `/api/*` to the serverless function (`api/index.js`) and serves `public/` as static files.
+To set it up from scratch:
+
+1. Import the GitHub repo into Vercel.
+2. Vercel → Storage → add **Neon** Postgres and connect it to the project (this adds `DATABASE_URL`).
+3. Settings → Environment Variables → add `ADMIN_PASSWORD`.
+4. Redeploy. Tables and the starting menu are created automatically.
+
+`vercel.json` serves `public/` as static files and rewrites `/api/*` and `/bill/*` to the Express function in `api/index.js`.
+
+**Backups:** Neon keeps point-in-time history on its free plan; you can also export from the Neon dashboard (Vercel → Storage → royal-bite-db → Open in Neon).
 
 ## Customize
 
@@ -74,15 +71,16 @@ Vercel routes `/api/*` to the serverless function (`api/index.js`) and serves `p
 ```
 api/index.js             Vercel serverless entry point
 server.js                Local dev server (same Express app)
-lib/db.js                Postgres schema + init
+lib/db.js                Postgres connection (pg on Vercel, PGlite locally) + schema
 lib/store.js             Postgres store: orders, bills, loyalty, customers, menu, settings
 lib/seed.js              Default settings and menu
 lib/auth.js              Signed-cookie admin sessions
 lib/util.js              Validation helpers and rate limiting
-routes/public.js         Storefront API: bootstrap, orders, loyalty, Blob uploads
+routes/public.js         Storefront API: bootstrap, orders, loyalty, cake photos
 routes/admin.js          Back-office API: auth, orders, menu, customers, settings, bills
+routes/print.js          Printable bill page and PDF (/bill/:id, /bill/:id.pdf)
 public/                  Storefront and back office (vanilla HTML/CSS/JS)
-vercel.json              Vercel routing config
+vercel.json              Vercel config (static files, rewrites, region)
 .env.example             Environment variable template
 test/smoke.test.js       End-to-end API tests
 ```
