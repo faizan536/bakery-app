@@ -78,6 +78,7 @@ const els = {
 };
 
 let autoRefreshTimer = null;
+let viewChanges = 0;
 let toastTimer = null;
 let savedTimer = null;
 
@@ -220,8 +221,10 @@ function applyBrand() {
 async function enterApp() {
   els.loginScreen.hidden = true;
   els.app.hidden = false;
+  const changesBefore = viewChanges;
   await loadSettings();
-  await setView("orders");
+  // If the user already tapped a section while settings loaded, keep it.
+  if (viewChanges === changesBefore) await setView("orders");
   if (!autoRefreshTimer) {
     autoRefreshTimer = setInterval(() => {
       if (
@@ -731,6 +734,7 @@ async function updateOrderStatus(orderId, status) {
 }
 
 async function setView(view) {
+  viewChanges += 1;
   state.view = view;
   $$(".side-link").forEach((button) => {
     button.classList.toggle("active", button.dataset.view === view);
