@@ -58,7 +58,7 @@ To set it up from scratch:
 
 `vercel.json` serves `public/` as static files and rewrites `/api/*` and `/bill/*` to the Express function in `api/index.js`.
 
-**Backups:** Neon keeps point-in-time history on its free plan; you can also export from the Neon dashboard (Vercel → Storage → royal-bite-db → Open in Neon).
+**Backups:** open Vercel → Storage → royal-bite-db → Open in Neon to see the data and take exports.
 
 ## Customize
 
